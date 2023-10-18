@@ -490,7 +490,7 @@ export class GitHubWorkflow extends PipelineBase {
 
     const installSuffix = this.cdkCliVersion ? `@${this.cdkCliVersion}` : '';
     const cdkoutDir = options.assemblyDir;
-    const jobId = `${Names.uniqueId(this)}-${node.uniqueId}`;
+    const jobId = node.uniqueId;
     const assetId = assets[0].assetId;
 
     // check if asset is docker asset and if we have docker credentials
@@ -511,7 +511,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.assetHashMap[assetId] = jobId;
     fileContents.push(`echo '${ASSET_HASH_NAME}=${assetId}' >> $GITHUB_OUTPUT`);
 
-    const publishStepFile = path.join(cdkoutDir, `publish-${jobId}-step.sh`);
+    const publishStepFile = path.join(cdkoutDir, `publish-${Names.uniqueId(this)}-${jobId}-step.sh`);
     mkdirSync(path.dirname(publishStepFile), { recursive: true });
     writeFileSync(publishStepFile, fileContents.join('\n'), { encoding: 'utf-8' });
 
