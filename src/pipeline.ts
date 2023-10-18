@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'fs';
 import * as path from 'path';
-import { Stage } from 'aws-cdk-lib';
+import { Names, Stage } from 'aws-cdk-lib';
 import { EnvironmentPlaceholders } from 'aws-cdk-lib/cx-api';
 import { PipelineBase, PipelineBaseProps, ShellStep, StackAsset, StackDeployment, StackOutputReference, StageDeployment, Step, Wave, WaveOptions } from 'aws-cdk-lib/pipelines';
 import { AGraphNode, PipelineGraph, Graph, isGraph } from 'aws-cdk-lib/pipelines/lib/helpers-internal';
@@ -490,7 +490,7 @@ export class GitHubWorkflow extends PipelineBase {
 
     const installSuffix = this.cdkCliVersion ? `@${this.cdkCliVersion}` : '';
     const cdkoutDir = options.assemblyDir;
-    const jobId = node.uniqueId;
+    const jobId = `${Names.uniqueId(this)}-${node.uniqueId}`;
     const assetId = assets[0].assetId;
 
     // check if asset is docker asset and if we have docker credentials
